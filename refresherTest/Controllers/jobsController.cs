@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using refresherTest.Data;
 using refresherTest.Models;
@@ -22,7 +23,39 @@ namespace refresherTest.Controllers
         // GET: jobs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.job.ToListAsync());
+            string connetionString = @"Data Source=(localdb)\local;Initial Catalog=master;Integrated Security=True";
+            SqlConnection cnn;
+            SqlCommand comm;
+            SqlDataReader dataR;
+            string sql;
+            List<job> jobList = new List<job>();
+
+            cnn = new SqlConnection(connetionString);
+            cnn.Open();
+            Console.WriteLine("Connection Open  !");
+
+            sql = "Select * from jobs";
+            comm = new SqlCommand(sql, cnn);
+            dataR = comm.ExecuteReader();
+
+            job j;
+
+            while (dataR.Read())
+            {
+                j = new job();
+                j.Id = (int)dataR.GetValue(0);
+                j.jobTitle = (string)dataR.GetValue(1);
+                j.minSalary = (decimal)dataR.GetValue(2);
+                j.maxSalary = (decimal)dataR.GetValue(3);
+
+                jobList.Add(j);
+            }
+
+            dataR.Close();
+            comm.Dispose();
+            cnn.Close();
+
+            return View(jobList);
         }
 
         // GET: jobs/Details/5
