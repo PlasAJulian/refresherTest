@@ -7,6 +7,19 @@ namespace refresherTest.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "country",
+                columns: table => new
+                {
+                    ID = table.Column<string>(nullable: false),
+                    countryName = table.Column<string>(nullable: true),
+                    regionID = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_country", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "job",
                 columns: table => new
                 {
@@ -24,6 +37,9 @@ namespace refresherTest.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "country");
+
             migrationBuilder.DropTable(
                 name: "job");
         }

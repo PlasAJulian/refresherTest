@@ -11,117 +11,115 @@ using refresherTest.Models;
 
 namespace refresherTest.Controllers
 {
-    public class jobsController : Controller
+    public class countriesController : Controller
     {
         private readonly refresherTestContext _context;
 
-        public jobsController(refresherTestContext context)
+        public countriesController(refresherTestContext context)
         {
             _context = context;
         }
 
-        // GET: jobs
-        public IActionResult Index()
+        // GET: countries
+        public async Task<IActionResult> Index()
         {
+            List<country> countriesList = new List<country>();
             string connetionString = @"Data Source=(localdb)\local;Initial Catalog=master;Integrated Security=True";
             SqlConnection cnn;
             SqlCommand comm;
             SqlDataReader dataR;
             string sql;
-            List<job> jobList = new List<job>();
-
             cnn = new SqlConnection(connetionString);
             cnn.Open();
             Console.WriteLine("Connection Open  !");
 
-            sql = "Select * from jobs";
+            sql = "Select * from countries";
             comm = new SqlCommand(sql, cnn);
             dataR = comm.ExecuteReader();
 
-            job j;
+            country c;
 
             while (dataR.Read())
             {
-                j = new job();
-                j.Id = (int)dataR.GetValue(0);
-                j.jobTitle = (string)dataR.GetValue(1);
-                j.minSalary = (decimal)dataR.GetValue(2);
-                j.maxSalary = (decimal)dataR.GetValue(3);
+                c = new country();
+                c.ID = (string)dataR.GetValue(0);
+                c.countryName = (string)dataR.GetValue(1);
+                c.regionID = (int)dataR.GetValue(2);
 
-                jobList.Add(j);
+                countriesList.Add(c);
             }
 
             dataR.Close();
             comm.Dispose();
             cnn.Close();
 
-            return View(jobList);
+            return View(countriesList);
         }
 
-        // GET: jobs/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: countries/Details/5
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var job = await _context.job
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (job == null)
+            var country = await _context.country
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (country == null)
             {
                 return NotFound();
             }
 
-            return View(job);
+            return View(country);
         }
 
-        // GET: jobs/Create
+        // GET: countries/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: jobs/Create
+        // POST: countries/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,jobTitle,minSalary,maxSalary")] job job)
+        public async Task<IActionResult> Create([Bind("ID,countryName,regionID")] country country)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(job);
+                _context.Add(country);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(job);
+            return View(country);
         }
 
-        // GET: jobs/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: countries/Edit/5
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var job = await _context.job.FindAsync(id);
-            if (job == null)
+            var country = await _context.country.FindAsync(id);
+            if (country == null)
             {
                 return NotFound();
             }
-            return View(job);
+            return View(country);
         }
 
-        // POST: jobs/Edit/5
+        // POST: countries/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,jobTitle,minSalary,maxSalary")] job job)
+        public async Task<IActionResult> Edit(string id, [Bind("ID,countryName,regionID")] country country)
         {
-            if (id != job.Id)
+            if (id != country.ID)
             {
                 return NotFound();
             }
@@ -130,12 +128,12 @@ namespace refresherTest.Controllers
             {
                 try
                 {
-                    _context.Update(job);
+                    _context.Update(country);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!jobExists(job.Id))
+                    if (!countryExists(country.ID))
                     {
                         return NotFound();
                     }
@@ -146,41 +144,41 @@ namespace refresherTest.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(job);
+            return View(country);
         }
 
-        // GET: jobs/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: countries/Delete/5
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var job = await _context.job
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (job == null)
+            var country = await _context.country
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (country == null)
             {
                 return NotFound();
             }
 
-            return View(job);
+            return View(country);
         }
 
-        // POST: jobs/Delete/5
+        // POST: countries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var job = await _context.job.FindAsync(id);
-            _context.job.Remove(job);
+            var country = await _context.country.FindAsync(id);
+            _context.country.Remove(country);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool jobExists(int id)
+        private bool countryExists(string id)
         {
-            return _context.job.Any(e => e.Id == id);
+            return _context.country.Any(e => e.ID == id);
         }
     }
 }

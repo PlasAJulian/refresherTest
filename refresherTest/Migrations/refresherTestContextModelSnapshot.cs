@@ -19,6 +19,22 @@ namespace refresherTest.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("refresherTest.Models.country", b =>
+                {
+                    b.Property<string>("ID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("countryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("regionID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("country");
+                });
+
             modelBuilder.Entity("refresherTest.Models.job", b =>
                 {
                     b.Property<int>("Id")
