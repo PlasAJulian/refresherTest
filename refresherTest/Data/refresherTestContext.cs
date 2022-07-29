@@ -19,5 +19,7 @@ namespace refresherTest.Data
         public DbSet<refresherTest.Models.job> job { get; set; }
 
         public DbSet<refresherTest.Models.country> country { get; set; }
+
+        public DbSet<refresherTest.Models.department> department { get; set; }
     }
 }

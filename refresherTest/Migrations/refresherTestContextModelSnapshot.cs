@@ -35,6 +35,24 @@ namespace refresherTest.Migrations
                     b.ToTable("country");
                 });
 
+            modelBuilder.Entity("refresherTest.Models.department", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("departmentName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("locationID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("department");
+                });
+
             modelBuilder.Entity("refresherTest.Models.job", b =>
                 {
                     b.Property<int>("Id")

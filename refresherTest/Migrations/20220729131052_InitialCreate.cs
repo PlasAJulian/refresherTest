@@ -20,6 +20,20 @@ namespace refresherTest.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "department",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    departmentName = table.Column<string>(nullable: true),
+                    locationID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_department", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "job",
                 columns: table => new
                 {
@@ -39,6 +53,9 @@ namespace refresherTest.Migrations
         {
             migrationBuilder.DropTable(
                 name: "country");
+
+            migrationBuilder.DropTable(
+                name: "department");
 
             migrationBuilder.DropTable(
                 name: "job");

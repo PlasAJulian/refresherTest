@@ -10,7 +10,7 @@ using refresherTest.Data;
 namespace refresherTest.Migrations
 {
     [DbContext(typeof(refresherTestContext))]
-    [Migration("20220729125738_InitialCreate")]
+    [Migration("20220729131052_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,24 @@ namespace refresherTest.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("country");
+                });
+
+            modelBuilder.Entity("refresherTest.Models.department", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("departmentName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("locationID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("department");
                 });
 
             modelBuilder.Entity("refresherTest.Models.job", b =>
