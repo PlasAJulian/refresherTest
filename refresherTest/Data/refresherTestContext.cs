@@ -9,9 +9,8 @@ namespace refresherTest.Data
 {
     public class refresherTestContext : DbContext
     {
-        internal object jobList;
 
-        public refresherTestContext (DbContextOptions<refresherTestContext> options)
+        public refresherTestContext(DbContextOptions<refresherTestContext> options)
             : base(options)
         {
         }
